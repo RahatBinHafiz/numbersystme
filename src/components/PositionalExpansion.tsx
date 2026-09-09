@@ -73,8 +73,8 @@ export function PositionalExpansion({ data, activeStep }: Props) {
                 }}
               >
                 <div className="flex items-center justify-between text-xs text-[var(--ink-soft)] mb-1">
-                  <span>Position {step.position}</span>
-                  <span className="font-mono">{fromStyle.name[0]}^{step.position}</span>
+                  <span>{step.isFraction ? `Frac (${step.position})` : `Pos ${step.position}`}</span>
+                  <span className="font-mono font-medium">{data.fromBase}<sup>{step.position}</sup></span>
                 </div>
                 <div className="font-mono-num flex items-baseline gap-1 my-1">
                   <span className="text-xl font-bold" style={{ color: fromStyle.varName }}>

@@ -9,22 +9,25 @@ interface Props {
 
 export function DigitExpansion({ data, activeStep }: Props) {
   const fromStyle = BASE_STYLES[data.fromBase]
+  const intSteps = data.steps.filter((s) => !s.isFraction)
+  const fracSteps = data.steps.filter((s) => s.isFraction)
+  const hasFraction = Boolean(data.hasFraction && fracSteps.length > 0)
 
   return (
     <div className="space-y-6">
       <div>
         <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-[var(--ink-soft)]">
-          Expand each {fromStyle.name} digit into exactly {data.bitsPerDigit} binary bits
+          Expand each {fromStyle.name} digit into exactly {data.bitsPerDigit} binary bits {hasFraction ? '(both integer and fraction)' : ''}
         </p>
 
-        <div className="flex flex-wrap gap-4">
-          {data.steps.map((step, i) => {
+        <div className="flex flex-wrap items-center gap-4">
+          {intSteps.map((step, i) => {
             const isActive = i <= activeStep
             const isCurrent = i === activeStep
 
             return (
               <motion.div
-                key={i}
+                key={`int-${i}`}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: isActive ? 1 : 0.35, scale: 1 }}
                 transition={{ duration: 0.25, delay: i * 0.05 }}
@@ -74,14 +77,80 @@ export function DigitExpansion({ data, activeStep }: Props) {
               </motion.div>
             )
           })}
+
+          {hasFraction && (
+            <div className="flex flex-col items-center justify-center px-1">
+              <span className="font-mono font-black text-3xl text-[var(--ink-soft)]">.</span>
+              <span className="text-[10px] uppercase font-semibold text-[var(--ink-soft)] tracking-wider">Point</span>
+            </div>
+          )}
+
+          {fracSteps.map((step, fIndex) => {
+            const stepIndex = intSteps.length + fIndex
+            const isActive = stepIndex <= activeStep
+            const isCurrent = stepIndex === activeStep
+
+            return (
+              <motion.div
+                key={`frac-${fIndex}`}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: isActive ? 1 : 0.35, scale: 1 }}
+                transition={{ duration: 0.25, delay: fIndex * 0.05 }}
+                className="flex flex-col items-center rounded-2xl border p-3 transition-all"
+                style={{
+                  borderColor: isCurrent ? fromStyle.varName : 'rgb(var(--border) / var(--border-alpha))',
+                  background: isCurrent
+                    ? `color-mix(in srgb, ${fromStyle.varName} 10%, var(--surface))`
+                    : 'color-mix(in srgb, var(--surface) 50%, transparent)',
+                  boxShadow: isCurrent ? `0 0 12px color-mix(in srgb, ${fromStyle.varName} 20%, transparent)` : 'none',
+                }}
+              >
+                <div className="text-[10px] font-semibold uppercase tracking-wider text-[var(--ink-soft)] mb-1">
+                  Frac {fIndex + 1}
+                </div>
+
+                <div
+                  className="font-mono-num flex h-10 w-10 items-center justify-center rounded-xl text-lg font-bold shadow-sm"
+                  style={{ background: fromStyle.varName, color: '#ffffff' }}
+                >
+                  {step.digit}
+                </div>
+
+                <span className="my-1.5 text-xs text-[var(--ink-soft)] font-bold">↓</span>
+
+                <div
+                  className="font-mono-num flex gap-1 rounded-xl border p-1.5"
+                  style={{ borderColor: 'rgb(var(--border) / var(--border-alpha))' }}
+                >
+                  {step.bits.split('').map((bit, j) => (
+                    <span
+                      key={j}
+                      className="flex h-8 w-8 items-center justify-center rounded-lg text-sm font-bold"
+                      style={{
+                        background: `color-mix(in srgb, ${fromStyle.varName} ${bit === '1' ? 24 : 8}%, transparent)`,
+                        color: bit === '1' ? fromStyle.varName : 'var(--ink-soft)',
+                      }}
+                    >
+                      {bit}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="mt-2 text-[10px] text-[var(--ink-soft)] font-mono text-center">
+                  {step.digit}{fromStyle.subscript} → {step.bits}₂
+                </div>
+              </motion.div>
+            )
+          })}
         </div>
       </div>
 
       <div className="rounded-2xl p-4 border space-y-2 bg-[color-mix(in_srgb,var(--surface)_60%,transparent)]" style={{ borderColor: 'rgb(var(--border) / var(--border-alpha))' }}>
         <p className="font-mono-num text-sm sm:text-base text-[var(--ink-soft)]">
-          Raw concatenation:{' '}
+          Concatenation:{' '}
           <span className="font-semibold text-[var(--ink)] tracking-wider">
-            {data.steps.map((s) => s.bits).join(' ')}₂
+            {intSteps.map((s) => s.bits).join(' ')}
+            {hasFraction ? ` . ${fracSteps.map((s) => s.bits).join(' ')}` : ''}₂
           </span>
         </p>
 

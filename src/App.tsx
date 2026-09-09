@@ -65,10 +65,10 @@ export function App() {
   // Preload example
   function handleExample() {
     const examples: Record<Base, string[]> = {
-      2: ['101101', '100101', '1101', '11111111'],
-      8: ['55', '157', '57', '77'],
-      10: ['45', '37', '111', '255'],
-      16: ['2D', '2F', 'FF', '3A'],
+      2: ['101101', '101.101', '1101.11', '11111111'],
+      8: ['55', '12.4', '157', '5.6'],
+      10: ['45', '10.5', '5.625', '255'],
+      16: ['2D', 'A.8', '5.C', '2F.4'],
     }
     const pool = examples[fromBase]
     const nextVal = pool[Math.floor(Math.random() * pool.length)]

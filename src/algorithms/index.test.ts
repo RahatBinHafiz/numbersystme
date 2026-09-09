@@ -85,3 +85,59 @@ describe('zero edge case', () => {
     expect(convert(8, 16, '0').result).toBe('0')
   })
 })
+
+describe('Fractional numbers conversion', () => {
+  it('binary to decimal: 10.1₂ = 2.5₁₀', () => {
+    expect(convert(2, 10, '10.1').result).toBe('2.5')
+  })
+  it('binary to decimal: 0.11₂ = 0.75₁₀', () => {
+    expect(convert(2, 10, '0.11').result).toBe('0.75')
+  })
+  it('binary to decimal: 101.101₂ = 5.625₁₀', () => {
+    expect(convert(2, 10, '101.101').result).toBe('5.625')
+  })
+
+  it('decimal to binary: 2.5₁₀ = 10.1₂', () => {
+    expect(convert(10, 2, '2.5').result).toBe('10.1')
+  })
+  it('decimal to binary: 0.75₁₀ = 0.11₂', () => {
+    expect(convert(10, 2, '0.75').result).toBe('0.11')
+  })
+  it('decimal to binary: 5.625₁₀ = 101.101₂', () => {
+    expect(convert(10, 2, '5.625').result).toBe('101.101')
+  })
+
+  it('octal <-> decimal with fractions', () => {
+    expect(convert(8, 10, '12.4').result).toBe('10.5')
+    expect(convert(10, 8, '10.5').result).toBe('12.4')
+  })
+
+  it('hex <-> decimal with fractions', () => {
+    expect(convert(16, 10, 'A.8').result).toBe('10.5')
+    expect(convert(10, 16, '10.5').result).toBe('A.8')
+  })
+
+  it('binary <-> octal with fractions', () => {
+    expect(convert(2, 8, '101.11').result).toBe('5.6')
+    expect(convert(8, 2, '5.6').result).toBe('101.11')
+  })
+
+  it('binary <-> hex with fractions', () => {
+    expect(convert(2, 16, '101.11').result).toBe('5.C')
+    expect(convert(16, 2, '5.C').result).toBe('101.11')
+  })
+
+  it('octal <-> hex with fractions (via bridge)', () => {
+    expect(convert(8, 16, '5.6').result).toBe('5.C')
+    expect(convert(16, 8, '5.C').result).toBe('5.6')
+  })
+
+  it('validates fractional inputs', () => {
+    expect(validateInput('10.1', 2).valid).toBe(true)
+    expect(validateInput('10.2', 2).valid).toBe(false)
+    expect(validateInput('10..1', 2).valid).toBe(false)
+    expect(validateInput('12.7', 8).valid).toBe(true)
+    expect(validateInput('12.8', 8).valid).toBe(false)
+    expect(validateInput('2F.A', 16).valid).toBe(true)
+  })
+})

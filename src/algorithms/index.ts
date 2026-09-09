@@ -71,9 +71,9 @@ export function convert(fromBase: Base, toBase: Base, input: string): Conversion
   if (fromBase === 8 && toBase === 10) return octalToDecimal(input)
   if (fromBase === 16 && toBase === 10) return hexToDecimal(input)
 
-  if (fromBase === 10 && toBase === 2) return decimalToBinary(parseDecimalDigits(input))
-  if (fromBase === 10 && toBase === 8) return decimalToOctal(parseDecimalDigits(input))
-  if (fromBase === 10 && toBase === 16) return decimalToHex(parseDecimalDigits(input))
+  if (fromBase === 10 && toBase === 2) return decimalToBinary(input)
+  if (fromBase === 10 && toBase === 8) return decimalToOctal(input)
+  if (fromBase === 10 && toBase === 16) return decimalToHex(input)
 
   if (fromBase === 2 && toBase === 8) return binaryToOctal(input)
   if (fromBase === 2 && toBase === 16) return binaryToHex(input)

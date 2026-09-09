@@ -19,7 +19,7 @@ export function StepByStepSolution({ result }: Props) {
       case 'positional-expansion':
         return result.steps.length
       case 'repeated-division':
-        return result.steps.length
+        return result.steps.length + (result.fractionSteps?.length ?? 0)
       case 'binary-grouping':
         return result.groups.length
       case 'digit-expansion':
