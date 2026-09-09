@@ -1,0 +1,6 @@
+{
+  "name": "Number System Lab",
+  "description": "Interactive educational laboratory for learning and visualizing number system conversions (Binary, Octal, Decimal, Hexadecimal) with step-by-step textbook solutions and 3D digit blocks.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
