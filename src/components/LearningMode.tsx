@@ -127,6 +127,24 @@ export function LearningMode({ onSelectExample }: Props) {
           </div>
         </div>
 
+        {/* Arithmetic & Negation Rules for this Base */}
+        <div className="rounded-2xl border p-4 space-y-3" style={{ borderColor: `color-mix(in srgb, ${style.varName} 30%, rgb(var(--border) / var(--border-alpha)))`, background: `color-mix(in srgb, ${style.varName} 5%, var(--surface))` }}>
+          <h3 className="text-xs font-semibold uppercase tracking-wider" style={{ color: style.varName }}>
+            Base {lesson.base} Arithmetic & Complements
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs sm:text-sm">
+            <div className="rounded-xl border p-3 bg-[color-mix(in_srgb,var(--surface)_60%,transparent)]" style={{ borderColor: 'rgb(var(--border) / var(--border-alpha))' }}>
+              <span className="font-bold block mb-1 text-[var(--ink)]">Summation & Carries:</span>
+              <span className="text-[var(--ink-soft)] leading-relaxed">{lesson.summationRule}</span>
+            </div>
+            <div className="rounded-xl border p-3 bg-[color-mix(in_srgb,var(--surface)_60%,transparent)]" style={{ borderColor: 'rgb(var(--border) / var(--border-alpha))' }}>
+              <span className="font-bold block mb-1 text-[var(--ink)]">Complements & Negation:</span>
+              <span className="text-[var(--ink-soft)] leading-relaxed">{lesson.negationRule}</span>
+            </div>
+          </div>
+        </div>
+
+
         {/* Worked Examples with Interactive Try In Lab */}
         <div>
           <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--ink-soft)] mb-3">

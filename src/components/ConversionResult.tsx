@@ -9,9 +9,18 @@ interface Props {
   fromBase: Base
   toBase: Base
   result: ConversionResultType
+  onNavigateToSummation?: (val: string, base: Base) => void
+  onNavigateToNegation?: (val: string, base: Base) => void
 }
 
-export function ConversionResult({ input, fromBase, toBase, result }: Props) {
+export function ConversionResult({
+  input,
+  fromBase,
+  toBase,
+  result,
+  onNavigateToSummation,
+  onNavigateToNegation,
+}: Props) {
   const [copied, setCopied] = useState(false)
   const fromStyle = BASE_STYLES[fromBase]
   const toStyle = BASE_STYLES[toBase]
@@ -98,6 +107,33 @@ export function ConversionResult({ input, fromBase, toBase, result }: Props) {
           </div>
         </div>
       </div>
+
+      {(onNavigateToSummation || onNavigateToNegation) && (
+        <div className="mt-4 flex flex-wrap items-center gap-2 pt-3 border-t" style={{ borderColor: 'rgb(var(--border) / var(--border-alpha))' }}>
+          <span className="text-xs text-[var(--ink-soft)] mr-1">Perform Base Arithmetic:</span>
+          {onNavigateToSummation && (
+            <button
+              type="button"
+              onClick={() => onNavigateToSummation(result.result, toBase)}
+              className="rounded-xl border px-3 py-1 text-xs font-medium text-[var(--ink-soft)] hover:text-[var(--ink)] transition-colors"
+              style={{ borderColor: 'rgb(var(--border) / var(--border-alpha))' }}
+            >
+              Add {result.result}{toStyle.subscript} in Summation Lab →
+            </button>
+          )}
+          {onNavigateToNegation && (
+            <button
+              type="button"
+              onClick={() => onNavigateToNegation(result.result, toBase)}
+              className="rounded-xl border px-3 py-1 text-xs font-medium text-[var(--ink-soft)] hover:text-[var(--ink)] transition-colors"
+              style={{ borderColor: 'rgb(var(--border) / var(--border-alpha))' }}
+            >
+              Negate {result.result}{toStyle.subscript} in Negation Lab →
+            </button>
+          )}
+        </div>
+      )}
     </div>
   )
 }
+

@@ -8,6 +8,8 @@ export interface BaseLesson {
   placeValues: string[]
   examples: { value: string; note: string }[]
   techniques: string[]
+  summationRule: string
+  negationRule: string
 }
 
 export const LESSONS: Record<Base, BaseLesson> = {
@@ -28,6 +30,8 @@ export const LESSONS: Record<Base, BaseLesson> = {
       'Binary → Octal: Group bits in clusters of 3, from right to left (pad left with 0s if needed).',
       'Binary → Hex: Group bits in clusters of 4, from right to left (pad left with 0s if needed).',
     ],
+    summationRule: '0+0=0; 0+1=1; 1+1=0 carry 1 (sum=2₁₀); 1+1+1=1 carry 1 (sum=3₁₀).',
+    negationRule: "1's complement inverts all bits (0↔1). 2's complement adds 1 to 1's complement, representing true signed negative values.",
   },
   8: {
     base: 8,
@@ -46,6 +50,8 @@ export const LESSONS: Record<Base, BaseLesson> = {
       'Octal → Binary: Expand each octal digit into exactly 3 binary bits.',
       'Octal → Hex: Bridge through binary — octal to binary (3 bits each), then group into 4 bits for hex.',
     ],
+    summationRule: 'Add column digits: if sum ≥ 8, write (sum mod 8) and carry ⌊sum / 8⌋ into the next column (e.g. 7₈ + 5₈ = 14₈).',
+    negationRule: "7's complement subtracts each digit from 7. 8's complement adds 1 to the 7's complement for modular hardware subtraction.",
   },
   10: {
     base: 10,
@@ -63,6 +69,8 @@ export const LESSONS: Record<Base, BaseLesson> = {
       'Decimal → any base: Repeated integer division by the target base, collecting remainders.',
       'Any base → Decimal: Multiply each digit by that base’s positional power and sum.',
     ],
+    summationRule: 'Standard column addition: if sum ≥ 10, write (sum mod 10) and carry 1 to the left tens column.',
+    negationRule: "9's complement subtracts each digit from 9. 10's complement adds 1 to 9's complement, providing decimal radix subtraction.",
   },
   16: {
     base: 16,
@@ -81,5 +89,8 @@ export const LESSONS: Record<Base, BaseLesson> = {
       'Hex → Binary: Expand each hex digit into exactly 4 binary bits.',
       'Hex → Octal: Bridge through binary — hex to binary (4 bits each), then group into 3 bits for octal.',
     ],
+    summationRule: 'Add column hex values: if sum ≥ 16, write valueToDigit(sum mod 16) and carry ⌊sum / 16⌋ (e.g. A₁₆ + 9₁₆ = 13₁₆).',
+    negationRule: "15's (F's) complement subtracts each hex digit from 15 (F). 16's complement adds 1 to 15's complement.",
   },
 }
+

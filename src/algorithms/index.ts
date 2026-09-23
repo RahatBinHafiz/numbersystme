@@ -14,6 +14,8 @@ import { parseDecimalDigits } from './primitives'
 import type { Base, ConversionResult } from './types'
 
 export * from './types'
+export { addInBase, type SummationResult, type SummationColumn } from './summation'
+export { negateInBase, type NegationResult, type DiminishedStep, type PlusOneRippleStep, COMPLEMENT_NAMES } from './negation'
 export {
   binaryToDecimal,
   binaryToOctal,

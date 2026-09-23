@@ -1,13 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
 import { convert } from './algorithms'
 import type { Base, ConversionResult as ConversionResultType, HistoryEntry } from './algorithms/types'
-import { Header } from './components/Header'
+import { Header, type AppMode } from './components/Header'
 import { ConverterPanel } from './components/ConverterPanel'
 import { ConversionResult } from './components/ConversionResult'
 import { StepByStepSolution } from './components/StepByStepSolution'
 import { HistoryPanel } from './components/HistoryPanel'
 import { ThreeScene } from './components/ThreeScene'
 import { LearningMode } from './components/LearningMode'
+import { SummationPanel } from './components/SummationPanel'
+import { NegationPanel } from './components/NegationPanel'
 import { useTheme } from './hooks/useTheme'
 import { useHistory } from './hooks/useHistory'
 import { normalizeInput, validateInput } from './utils/validation'
@@ -18,7 +20,7 @@ export function App() {
   const { theme, toggle: toggleTheme } = useTheme()
   const { entries: historyEntries, addEntry: addToHistory, clear: clearHistory } = useHistory()
 
-  const [mode, setMode] = useState<'lab' | 'learn'>('lab')
+  const [mode, setMode] = useState<AppMode>('lab')
   const [show3D, setShow3D] = useState(false)
   const [fromBase, setFromBase] = useState<Base>(2)
   const [toBase, setToBase] = useState<Base>(10)
@@ -144,6 +146,16 @@ export function App() {
                   fromBase={fromBase}
                   toBase={toBase}
                   result={conversionResult}
+                  onNavigateToSummation={(val, b) => {
+                    setFromBase(b)
+                    setInput(val)
+                    setMode('summation')
+                  }}
+                  onNavigateToNegation={(val, b) => {
+                    setFromBase(b)
+                    setInput(val)
+                    setMode('negation')
+                  }}
                 />
 
                 {show3D && sceneSpec && (
@@ -180,6 +192,36 @@ export function App() {
               onClear={clearHistory}
             />
           </div>
+        ) : mode === 'summation' ? (
+          <SummationPanel
+            initialBase={fromBase}
+            initialA={input}
+            onSwitchToLab={(val, b) => {
+              setFromBase(b)
+              setInput(val)
+              setMode('lab')
+            }}
+            onSwitchToNegation={(val, b) => {
+              setFromBase(b)
+              setInput(val)
+              setMode('negation')
+            }}
+          />
+        ) : mode === 'negation' ? (
+          <NegationPanel
+            initialBase={fromBase}
+            initialInput={input}
+            onSwitchToLab={(val, b) => {
+              setFromBase(b)
+              setInput(val)
+              setMode('lab')
+            }}
+            onSwitchToSummation={(val, b) => {
+              setFromBase(b)
+              setInput(val)
+              setMode('summation')
+            }}
+          />
         ) : (
           <LearningMode onSelectExample={handleSelectFromLearn} />
         )}
@@ -187,5 +229,6 @@ export function App() {
     </div>
   )
 }
+
 
 export default App
